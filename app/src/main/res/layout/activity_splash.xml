@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.example.news.view.myVideoView
+        android:id="@+id/videoview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <Button
+        android:text="进入网易新闻"
+        android:onClick="enterHome"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+</RelativeLayout>
