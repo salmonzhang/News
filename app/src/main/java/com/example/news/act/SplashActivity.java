@@ -36,7 +36,7 @@ public class SplashActivity extends AppCompatActivity {
         //使用SP保存是否是第一次进入
 
         boolean isFirst = SpUtil.getBoolean(this, "isFirst", true);
-        if (isFirst) {
+        if (true) {
             //进入引导界面
             startActivity(new Intent(this, GuideActivity.class));
             //保存状态
