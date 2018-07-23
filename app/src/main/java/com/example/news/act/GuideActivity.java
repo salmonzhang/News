@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.example.news.R;
+import com.example.news.view.DepthPageTransformer;
 
 public class GuideActivity extends AppCompatActivity {
 
@@ -26,6 +27,12 @@ public class GuideActivity extends AppCompatActivity {
         mViewPager = (ViewPager) findViewById(R.id.viewpager);
         GuideAdapter guideAdapter = new GuideAdapter();
         mViewPager.setAdapter(guideAdapter);
+
+        /**
+         * docs中index.html中两种viewPager动画效果
+         */
+        //mViewPager.setPageTransformer(true, new ZoomOutPageTransformer());
+        mViewPager.setPageTransformer(true, new DepthPageTransformer());
     }
 
     private class GuideAdapter extends PagerAdapter{
