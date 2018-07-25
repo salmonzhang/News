@@ -9,11 +9,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.example.news.R;
-import com.example.news.view.DepthPageTransformer;
+import com.example.news.view.CustomViewPager;
 
 public class GuideActivity extends AppCompatActivity {
 
-    private ViewPager mViewPager;
+    private CustomViewPager mViewPager;
     private int[] imageIds = {R.mipmap.guide_1,R.mipmap.guide_2,R.mipmap.guide_3};
 
     @Override
@@ -24,7 +24,7 @@ public class GuideActivity extends AppCompatActivity {
     }
 
     private void initView() {
-        mViewPager = (ViewPager) findViewById(R.id.viewpager);
+        mViewPager = (CustomViewPager) findViewById(R.id.viewpager);
         GuideAdapter guideAdapter = new GuideAdapter();
         mViewPager.setAdapter(guideAdapter);
 
@@ -32,7 +32,23 @@ public class GuideActivity extends AppCompatActivity {
          * docs中index.html中两种viewPager动画效果
          */
         //mViewPager.setPageTransformer(true, new ZoomOutPageTransformer());
-        mViewPager.setPageTransformer(true, new DepthPageTransformer());
+        //mViewPager.setPageTransformer(true, new DepthPageTransformer());
+        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
 
     private class GuideAdapter extends PagerAdapter{
@@ -56,6 +72,9 @@ public class GuideActivity extends AppCompatActivity {
             //当设置为资源图片时，左右两侧显示出来有白边，当设置为背景资源时，就没有该问题。
             iv.setBackgroundResource(imageIds[position]);
             container.addView(iv);
+
+            //将当前页面的对象在初始化的时候传递给控件来操作
+            mViewPager.addChildView(iv,position);
             return iv;
         }
 
@@ -63,6 +82,9 @@ public class GuideActivity extends AppCompatActivity {
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
             container.removeView(((View) object));
+
+            //将当前页面的对象从集合中删除
+            mViewPager.removeChildView(position);
         }
     }
 }
