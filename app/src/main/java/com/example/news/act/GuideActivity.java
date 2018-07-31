@@ -9,11 +9,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.example.news.R;
-import com.example.news.view.CustomViewPager;
+import com.example.news.view.RotatePageTransformer;
 
 public class GuideActivity extends AppCompatActivity {
 
-    private CustomViewPager mViewPager;
+    //    private CustomViewPager mViewPager;
+    private ViewPager mViewPager;
     private int[] imageIds = {R.mipmap.guide_1,R.mipmap.guide_2,R.mipmap.guide_3};
 
     @Override
@@ -24,7 +25,8 @@ public class GuideActivity extends AppCompatActivity {
     }
 
     private void initView() {
-        mViewPager = (CustomViewPager) findViewById(R.id.viewpager);
+//        mViewPager = (CustomViewPager) findViewById(R.id.viewpager);
+        mViewPager = (ViewPager) findViewById(R.id.viewpager);
         GuideAdapter guideAdapter = new GuideAdapter();
         mViewPager.setAdapter(guideAdapter);
 
@@ -33,6 +35,8 @@ public class GuideActivity extends AppCompatActivity {
          */
         //mViewPager.setPageTransformer(true, new ZoomOutPageTransformer());
         //mViewPager.setPageTransformer(true, new DepthPageTransformer());
+        mViewPager.setPageTransformer(true, new RotatePageTransformer());
+
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -74,7 +78,7 @@ public class GuideActivity extends AppCompatActivity {
             container.addView(iv);
 
             //将当前页面的对象在初始化的时候传递给控件来操作
-            mViewPager.addChildView(iv,position);
+//            mViewPager.addChildView(iv,position);
             return iv;
         }
 
@@ -84,7 +88,7 @@ public class GuideActivity extends AppCompatActivity {
             container.removeView(((View) object));
 
             //将当前页面的对象从集合中删除
-            mViewPager.removeChildView(position);
+//            mViewPager.removeChildView(position);
         }
     }
 }
