@@ -1,21 +1,24 @@
 package com.example.news.act;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 
 import com.example.news.R;
 import com.example.news.view.RotatePageTransformer;
 
-public class GuideActivity extends AppCompatActivity {
+public class GuideActivity extends AppCompatActivity implements View.OnClickListener {
 
     //    private CustomViewPager mViewPager;
     private ViewPager mViewPager;
     private int[] imageIds = {R.mipmap.guide_1,R.mipmap.guide_2,R.mipmap.guide_3};
+    private Button mButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +28,9 @@ public class GuideActivity extends AppCompatActivity {
     }
 
     private void initView() {
+        mButton = (Button) findViewById(R.id.bt);
+        mButton.setOnClickListener(this);
+
 //        mViewPager = (CustomViewPager) findViewById(R.id.viewpager);
         mViewPager = (ViewPager) findViewById(R.id.viewpager);
         GuideAdapter guideAdapter = new GuideAdapter();
@@ -40,7 +46,11 @@ public class GuideActivity extends AppCompatActivity {
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
+                if (position == mViewPager.getAdapter().getCount() - 1) {
+                    mButton.setVisibility(View.VISIBLE);
+                } else {
+                    mButton.setVisibility(View.INVISIBLE);
+                }
             }
 
             @Override
@@ -53,6 +63,11 @@ public class GuideActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    @Override
+    public void onClick(View v) {
+        startActivity(new Intent(this,HomeActivity.class));
     }
 
     private class GuideAdapter extends PagerAdapter{

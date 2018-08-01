@@ -17,5 +17,15 @@
         <!--android:layout_height="match_parent">-->
 
     <!--</com.example.news.view.CustomViewPager>-->
+    <Button
+        android:id="@+id/bt"
+        android:visibility="invisible"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="25dp"
+        android:textColor="#000"
+        android:text="进入主界面"/>
 
 </RelativeLayout>
