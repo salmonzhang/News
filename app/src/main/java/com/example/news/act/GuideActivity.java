@@ -9,8 +9,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.example.news.R;
+import com.example.news.utils.DensityUtil;
 import com.example.news.view.RotatePageTransformer;
 
 public class GuideActivity extends AppCompatActivity implements View.OnClickListener {
@@ -19,17 +21,45 @@ public class GuideActivity extends AppCompatActivity implements View.OnClickList
     private ViewPager mViewPager;
     private int[] imageIds = {R.mipmap.guide_1,R.mipmap.guide_2,R.mipmap.guide_3};
     private Button mButton;
+    private LinearLayout mLinearLayout;
+    private ImageView mIv_focus;
+    private int mPointMargin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_guide);
         initView();
+        initData();
+    }
+
+    private void initData() {
+        //根据引导界面的图片长度，动态添加小白点
+        for (int i = 0; i < imageIds.length; i++) {
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(DensityUtil.dip2px(this, 5), DensityUtil.dip2px(this, 5));
+            ImageView point = new ImageView(this);
+            point.setBackgroundResource(R.mipmap.dot_normal);
+            if (i != 0) {
+                params.leftMargin = DensityUtil.dip2px(this, 5);
+            }
+            point.setLayoutParams(params);
+            mLinearLayout.addView(point);
+        }
+
+        mIv_focus.post(new Runnable() {//当view显示之后执行的任务
+            @Override
+            public void run() {
+                mPointMargin = mLinearLayout.getChildAt(1).getLeft() - mLinearLayout.getChildAt(0).getLeft();
+            }
+        });
     }
 
     private void initView() {
         mButton = (Button) findViewById(R.id.bt);
         mButton.setOnClickListener(this);
+
+        mLinearLayout = (LinearLayout) findViewById(R.id.ll_point_group);
+        mIv_focus = (ImageView) findViewById(R.id.iv_focus);
 
 //        mViewPager = (CustomViewPager) findViewById(R.id.viewpager);
         mViewPager = (ViewPager) findViewById(R.id.viewpager);
@@ -51,6 +81,9 @@ public class GuideActivity extends AppCompatActivity implements View.OnClickList
                 } else {
                     mButton.setVisibility(View.INVISIBLE);
                 }
+
+                //手指滑动时，让选中的点实时的动起来
+                mIv_focus.setTranslationX((position + positionOffset) * mPointMargin);
             }
 
             @Override
