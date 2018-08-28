@@ -1,8 +1,10 @@
 package com.example.news.act;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 
 import com.example.news.R;
+import com.example.news.fragment.MenuFragment;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.jeremyfeinstein.slidingmenu.lib.app.SlidingFragmentActivity;
 
@@ -46,5 +48,13 @@ public class HomeActivity extends SlidingFragmentActivity {
         //如果要左右都显示必须设置第二个菜单
 //        slidingMenu.setSecondaryMenu(R.layout.activity_menu);
 //        slidingMenu.setSecondaryShadowDrawable(R.drawable.shadow);
+
+        //将第一个菜单页面用fragment替换
+        MenuFragment menuFragment = new MenuFragment();
+        getSupportFragmentManager().beginTransaction().replace(R.id.fl_menu, menuFragment).commit();
+    }
+
+    public void switchFragment(Fragment fragment) {
+        getSupportFragmentManager().beginTransaction().replace(R.id.fl_content, fragment).commit();
     }
 }
