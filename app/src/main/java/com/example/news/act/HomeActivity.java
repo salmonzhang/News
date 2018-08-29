@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
 import com.example.news.R;
+import com.example.news.fragment.HomeFragment;
 import com.example.news.fragment.MenuFragment;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.jeremyfeinstein.slidingmenu.lib.app.SlidingFragmentActivity;
@@ -50,8 +51,13 @@ public class HomeActivity extends SlidingFragmentActivity {
 //        slidingMenu.setSecondaryShadowDrawable(R.drawable.shadow);
 
         //将第一个菜单页面用fragment替换
+        //展示菜单界面
         MenuFragment menuFragment = new MenuFragment();
         getSupportFragmentManager().beginTransaction().replace(R.id.fl_menu, menuFragment).commit();
+
+        //展示内容界面
+        HomeFragment homeFragment = new HomeFragment();
+        getSupportFragmentManager().beginTransaction().add(R.id.fl_content, homeFragment).commit();
     }
 
     public void switchFragment(Fragment fragment) {
