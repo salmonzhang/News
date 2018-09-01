@@ -5,12 +5,12 @@
     android:background="@android:color/white"
     android:orientation="vertical" >
 
-      <android.support.v4.view.ViewPager
+      <com.example.news.view.NoScrollViewPager
           android:id="@+id/view_pager"
           android:layout_width="match_parent"
           android:layout_height="0dip"
           android:layout_weight="1.0" >
-      </android.support.v4.view.ViewPager>
+      </com.example.news.view.NoScrollViewPager>
 
     <RadioGroup
         android:id="@+id/main_radio"
