@@ -21,4 +21,9 @@ public class GoverPage extends BasePage {
         textView.setText("政务中心");
         return textView;
     }
+
+    @Override
+    public void initData() {
+        System.out.println("获取政务指南的页面数据");
+    }
 }

@@ -26,17 +26,22 @@ public class SettingPage extends BasePage {
 //        return textView;
 
         ListView listView = new ListView(mContext);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(mContext, android.R.layout.simple_list_item_1, initData());
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(mContext, android.R.layout.simple_list_item_1, initDatas());
         listView.setAdapter(adapter);
         return listView;
     }
 
-    private List<String> initData() {
+    private List<String> initDatas() {
         List<String> datas = new ArrayList<>();
         for (int i = 0; i < 30; i++) {
             datas.add(i + "");
         }
         return datas;
+    }
+
+    @Override
+    public void initData() {
+        System.out.println("获取设置的页面数据");
     }
 
 }

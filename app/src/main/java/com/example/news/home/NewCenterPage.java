@@ -21,4 +21,9 @@ public class NewCenterPage extends BasePage {
         textView.setText("新闻中心");
         return textView;
     }
+
+    @Override
+    public void initData() {
+        System.out.println("获取新闻中心的页面数据");
+    }
 }

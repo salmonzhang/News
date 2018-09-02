@@ -23,4 +23,9 @@ public class FuncationPage extends BasePage {
         textView.setText("首页");
         return textView;
     }
+
+    @Override
+    public void initData() {
+        System.out.println("获取首页的页面数据");
+    }
 }

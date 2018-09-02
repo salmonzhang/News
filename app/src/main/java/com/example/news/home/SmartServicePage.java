@@ -22,4 +22,9 @@ public class SmartServicePage extends BasePage {
         textView.setText("智慧服务");
         return textView;
     }
+
+    @Override
+    public void initData() {
+        System.out.println("获取智慧服务的页面数据");
+    }
 }
