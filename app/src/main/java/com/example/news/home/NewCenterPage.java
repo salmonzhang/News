@@ -1,14 +1,19 @@
 package com.example.news.home;
 
 import android.content.Context;
+import android.os.Handler;
+import android.os.Message;
 import android.view.View;
 import android.widget.TextView;
 
+import com.example.news.act.HomeActivity;
 import com.example.news.bean.NewsCenterBean;
 import com.example.news.utils.GsonTools;
 import com.example.news.utils.HMAPI;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -23,6 +28,21 @@ import okhttp3.Response;
  */
 
 public class NewCenterPage extends BasePage {
+
+    public List<String> newsCenterTitles = new ArrayList<>();
+    private Handler mHandler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case 0:
+                    //通过HomeActivity获取到MenuFragment2中的setMenuTitle方法
+                    ((HomeActivity) mContext).getMenuFragment().setMenuTitle(newsCenterTitles);
+                    break;
+            }
+        }
+    };
+
     public NewCenterPage(Context context) {
         super(context);
     }
@@ -67,6 +87,15 @@ public class NewCenterPage extends BasePage {
                 //使用GsonTools解析数组型json
 //                NewsCenterBean arrayJsonBean = GsonTools.changeGsonToList(json, ArrayJsonBean.class);
 
+                //每次网络请求后，应先清空newsCenterTitles中的数据，防止数据重复
+                newsCenterTitles.clear();
+                //获取网络数据新闻中心中标题集合
+                List<NewsCenterBean.DataBean> dataBeans = newsCenterBean.getData();
+                for (NewsCenterBean.DataBean dataBean : dataBeans) {
+                    newsCenterTitles.add(dataBean.getTitle());
+                }
+                //获取到新闻中心的标题集合后，使用Handler在主线程中修改UI
+                mHandler.sendEmptyMessage(0);
             }
         });
     }

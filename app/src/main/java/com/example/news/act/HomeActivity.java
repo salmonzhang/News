@@ -5,11 +5,13 @@ import android.support.v4.app.Fragment;
 
 import com.example.news.R;
 import com.example.news.fragment.HomeFragment;
-import com.example.news.fragment.MenuFragment;
+import com.example.news.fragment.MenuFragment2;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.jeremyfeinstein.slidingmenu.lib.app.SlidingFragmentActivity;
 
 public class HomeActivity extends SlidingFragmentActivity {
+
+    private MenuFragment2 mMenuFragment2;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -52,8 +54,10 @@ public class HomeActivity extends SlidingFragmentActivity {
 
         //将第一个菜单页面用fragment替换
         //展示菜单界面
-        MenuFragment menuFragment = new MenuFragment();
-        getSupportFragmentManager().beginTransaction().replace(R.id.fl_menu, menuFragment).commit();
+//        MenuFragment menuFragment = new MenuFragment();
+//        getSupportFragmentManager().beginTransaction().replace(R.id.fl_menu, menuFragment).commit();
+        mMenuFragment2 = new MenuFragment2();
+        getSupportFragmentManager().beginTransaction().replace(R.id.fl_menu, mMenuFragment2).commit();
 
         //展示内容界面
         HomeFragment homeFragment = new HomeFragment();
@@ -62,5 +66,10 @@ public class HomeActivity extends SlidingFragmentActivity {
 
     public void switchFragment(Fragment fragment) {
         getSupportFragmentManager().beginTransaction().replace(R.id.fl_content, fragment).commit();
+    }
+
+    //返回挂载在主界面的菜单Fragment
+    public MenuFragment2 getMenuFragment() {
+        return mMenuFragment2;
     }
 }
