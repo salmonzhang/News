@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Color;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -18,31 +17,35 @@ import java.util.List;
  * Date:2018/9/3 0003 23:22
  */
 
-public class MenuAdapter extends BaseAdapter {
+public class MenuAdapter extends MyBaseAdapter<String> {
 
-    private Context mContext;
-    private List<String> mDatas;
+//    private Context mContext;
+//    private List<String> mDatas;
     private int mClickPosition;
 
-    public MenuAdapter(Context context, List<String> datas) {
-        this.mContext = context;
-        this.mDatas = datas;
+    public MenuAdapter(Context context, List datas) {
+        super(context, datas);
     }
 
-    @Override
-    public int getCount() {
-        return mDatas.size();
-    }
+//    public MenuAdapter(Context context, List<String> datas) {
+//        this.mContext = context;
+//        this.mDatas = datas;
+//    }
 
-    @Override
-    public String getItem(int position) {
-        return mDatas.get(position);
-    }
+//    @Override
+//    public int getCount() {
+//        return mDatas.size();
+//    }
 
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
+//    @Override
+//    public String getItem(int position) {
+//        return mDatas.get(position);
+//    }
+
+//    @Override
+//    public long getItemId(int position) {
+//        return position;
+//    }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
