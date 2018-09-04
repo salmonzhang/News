@@ -11,6 +11,8 @@ import android.view.View;
 
 public abstract class BasePage {
 
+    public boolean isLoad = false;//判断每个页面对象是否已经加载了数据，取消重复加载
+
     public Context mContext;
     private View mRootView;
 

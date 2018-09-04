@@ -163,9 +163,13 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
 
     @Override
     public void onPageSelected(int position) {
-        //通过position获取对应页面的对象，并调用所在页面的数据初始化方法
-        //通过viwePager的页面监听去获取对应页面的数据，这样就不用手动的去写页面索引（1、2、3、4）
-        mHomePages.get(position).initData();
+        //在页面选中的时候，先判断当前选中的页面数据是否已经加载，如果没有加载，再去网络请求，初始化数据
+        BasePage basePage = mHomePages.get(position);
+        if (!basePage.isLoad) {
+            //通过position获取对应页面的对象，并调用所在页面的数据初始化方法
+            //通过viwePager的页面监听去获取对应页面的数据，这样就不用手动的去写页面索引（1、2、3、4）
+            basePage.initData();
+        }
     }
 
     @Override

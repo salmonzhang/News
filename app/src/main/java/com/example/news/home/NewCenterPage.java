@@ -3,6 +3,7 @@ package com.example.news.home;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
@@ -10,6 +11,7 @@ import com.example.news.act.HomeActivity;
 import com.example.news.bean.NewsCenterBean;
 import com.example.news.utils.GsonTools;
 import com.example.news.utils.HMAPI;
+import com.example.news.utils.SpUtil;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -57,7 +59,17 @@ public class NewCenterPage extends BasePage {
     @Override
     public void initData() {
         System.out.println("获取新闻中心的页面数据");
+        //先从数据库中获取缓存的数据，防止断网后上次加载的内容为空
+        String json = SpUtil.getString(mContext, HMAPI.NEW_CENTER, "");
+        if (!TextUtils.isEmpty(json)) {
+            parseJson(json);
+        }
+        //从本地获取缓存数据后，然后再从网络去获取数据，再覆盖掉上一次数据库中保存的数据
+        getNetData();
+    }
 
+    //获取网络数据
+    private void getNetData() {
         Request request = new Request.Builder().url(HMAPI.NEW_CENTER).build();
         OkHttpClient okHttpClient = new OkHttpClient();
         Call call = okHttpClient.newCall(request);
@@ -74,30 +86,38 @@ public class NewCenterPage extends BasePage {
             public void onResponse(Call call, Response response) throws IOException {
                 String json = response.body().string();
                 System.out.println(json);
+                //获取到json数据后，应该使用数据库进行保存，用来缓存数据，但这里为了方便使用sp保存
+                SpUtil.saveString(mContext,HMAPI.NEW_CENTER,json);
+                //获取到网络数据后，将isLoad置为true
+                isLoad = true;
+                parseJson(json);
+            }
+        });
+    }
 
-                //使用Gson解析json数据的原始写法
+    //解析json数据
+    private void parseJson(String json) {
+        //使用Gson解析json数据的原始写法
 //                Gson gson = new Gson();
 //                NewsCenterBean newsCenterBean = gson.fromJson(json, NewsCenterBean.class);
 //                System.out.println(newsCenterBean);
 
-                //使用GsonTools解析对象型json
-                NewsCenterBean newsCenterBean = GsonTools.changeGsonToBean(json, NewsCenterBean.class);
-                System.out.println(newsCenterBean);
+        //使用GsonTools解析对象型json
+        NewsCenterBean newsCenterBean = GsonTools.changeGsonToBean(json, NewsCenterBean.class);
+        System.out.println(newsCenterBean);
 
-                //使用GsonTools解析数组型json
+        //使用GsonTools解析数组型json
 //                NewsCenterBean arrayJsonBean = GsonTools.changeGsonToList(json, ArrayJsonBean.class);
 
-                //每次网络请求后，应先清空newsCenterTitles中的数据，防止数据重复
-                newsCenterTitles.clear();
-                //获取网络数据新闻中心中标题集合
-                List<NewsCenterBean.DataBean> dataBeans = newsCenterBean.getData();
-                for (NewsCenterBean.DataBean dataBean : dataBeans) {
-                    newsCenterTitles.add(dataBean.getTitle());
-                }
-                //获取到新闻中心的标题集合后，使用Handler在主线程中修改UI
-                mHandler.sendEmptyMessage(0);
-            }
-        });
+        //每次网络请求后，应先清空newsCenterTitles中的数据，防止数据重复
+        newsCenterTitles.clear();
+        //获取网络数据新闻中心中标题集合
+        List<NewsCenterBean.DataBean> dataBeans = newsCenterBean.getData();
+        for (NewsCenterBean.DataBean dataBean : dataBeans) {
+            newsCenterTitles.add(dataBean.getTitle());
+        }
+        //获取到新闻中心的标题集合后，使用Handler在主线程中修改UI
+        mHandler.sendEmptyMessage(0);
     }
 
 }

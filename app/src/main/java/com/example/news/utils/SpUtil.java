@@ -29,4 +29,20 @@ public class SpUtil {
         }
         return sSp.getBoolean(key, defValue);
     }
+
+    //保存String值
+    public static void saveString(Context context, String key, String value) {
+        if (sSp == null) {
+            sSp = context.getSharedPreferences(CONFIG, Context.MODE_PRIVATE);
+        }
+        sSp.edit().putString(key, value).commit();
+    }
+
+    //获取String值
+    public static String getString(Context context, String key, String defValue){
+        if (sSp == null) {
+            sSp = context.getSharedPreferences(CONFIG, Context.MODE_PRIVATE);
+        }
+        return sSp.getString(key, defValue);
+    }
 }
