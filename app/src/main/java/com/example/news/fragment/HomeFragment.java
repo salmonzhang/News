@@ -176,4 +176,8 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
     public void onPageScrollStateChanged(int state) {
 
     }
+
+    public NewCenterPage getNewsCenterPage() {
+        return ((NewCenterPage) mHomePages.get(1));
+    }
 }

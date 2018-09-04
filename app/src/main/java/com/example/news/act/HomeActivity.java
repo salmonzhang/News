@@ -61,7 +61,7 @@ public class HomeActivity extends SlidingFragmentActivity {
 
         //展示内容界面
         HomeFragment homeFragment = new HomeFragment();
-        getSupportFragmentManager().beginTransaction().add(R.id.fl_content, homeFragment).commit();
+        getSupportFragmentManager().beginTransaction().add(R.id.fl_content, homeFragment,"HOME").commit();
     }
 
     public void switchFragment(Fragment fragment) {
@@ -71,5 +71,10 @@ public class HomeActivity extends SlidingFragmentActivity {
     //返回挂载在主界面的菜单Fragment
     public MenuFragment2 getMenuFragment() {
         return mMenuFragment2;
+    }
+
+    //返回挂载在主界面的内容Fragment
+    public HomeFragment getHomeFragment() {
+        return ((HomeFragment) getSupportFragmentManager().findFragmentByTag("HOME"));
     }
 }

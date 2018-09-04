@@ -120,4 +120,7 @@ public class NewCenterPage extends BasePage {
         mHandler.sendEmptyMessage(0);
     }
 
+    public void switchView(int position) {
+        System.out.println("切换新闻中心中的view = " + position);
+    }
 }

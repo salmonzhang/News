@@ -6,7 +6,9 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.example.news.R;
+import com.example.news.act.HomeActivity;
 import com.example.news.adapter.MenuAdapter;
+import com.example.news.home.NewCenterPage;
 
 import java.util.List;
 
@@ -59,6 +61,13 @@ public class MenuFragment2 extends BaseFragment implements AdapterView.OnItemCli
             case R.id.lv_menu_news_center:
                 //记录选中的索引，并让适配器刷新
                 mNewsCenterAdapter.setClickPosition(position);
+
+                //隐藏侧滑菜单
+                mSlidingMenu.toggle();
+
+                //控制新闻中心页面切换
+                NewCenterPage newsCenterPage = ((HomeActivity) mContext).getHomeFragment().getNewsCenterPage();
+                newsCenterPage.switchView(position);
                 break;
             case R.id.lv_menu_smart_service:
                 break;
