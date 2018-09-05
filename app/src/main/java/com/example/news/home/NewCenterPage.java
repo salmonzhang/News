@@ -5,10 +5,15 @@ import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.TextView;
+import android.widget.FrameLayout;
 
+import com.example.news.R;
 import com.example.news.act.HomeActivity;
 import com.example.news.bean.NewsCenterBean;
+import com.example.news.menu.ActionPage;
+import com.example.news.menu.NewPage;
+import com.example.news.menu.PicPage;
+import com.example.news.menu.TopicPage;
 import com.example.news.utils.GsonTools;
 import com.example.news.utils.HMAPI;
 import com.example.news.utils.SpUtil;
@@ -40,10 +45,15 @@ public class NewCenterPage extends BasePage {
                 case 0:
                     //通过HomeActivity获取到MenuFragment2中的setMenuTitle方法
                     ((HomeActivity) mContext).getMenuFragment().setMenuTitle(newsCenterTitles);
+
+                    //默认显示新闻界面
+                    switchView(0);
                     break;
             }
         }
     };
+    private FrameLayout mNew_center_fl;
+    private ArrayList<BasePage> mNewCenterPages;
 
     public NewCenterPage(Context context) {
         super(context);
@@ -51,9 +61,9 @@ public class NewCenterPage extends BasePage {
 
     @Override
     public View initView() {
-        TextView textView = new TextView(mContext);
-        textView.setText("新闻中心");
-        return textView;
+        View view = View.inflate(mContext, R.layout.news_center_frame, null);
+        mNew_center_fl = (FrameLayout) view.findViewById(R.id.news_center_fl);
+        return view;
     }
 
     @Override
@@ -116,11 +126,23 @@ public class NewCenterPage extends BasePage {
         for (NewsCenterBean.DataBean dataBean : dataBeans) {
             newsCenterTitles.add(dataBean.getTitle());
         }
+
+        //创建出新闻中心的4个页面对象，并封装在集合中
+        mNewCenterPages = new ArrayList<>();
+        mNewCenterPages.add(new NewPage(mContext));
+        mNewCenterPages.add(new TopicPage(mContext));
+        mNewCenterPages.add(new PicPage(mContext));
+        mNewCenterPages.add(new ActionPage(mContext));
+
         //获取到新闻中心的标题集合后，使用Handler在主线程中修改UI
         mHandler.sendEmptyMessage(0);
     }
 
     public void switchView(int position) {
         System.out.println("切换新闻中心中的view = " + position);
+        //当左边菜单列表被点击时，让新闻中心帧布局展示对应的页面
+        //因为帧布局addView后，view会一直叠加，所以在addView之前，应先清空之前添加的View
+        mNew_center_fl.removeAllViews();
+        mNew_center_fl.addView(mNewCenterPages.get(position).getRootView());
     }
 }
