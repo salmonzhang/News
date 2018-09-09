@@ -63,6 +63,9 @@ public class NewCenterPage extends BasePage {
     public View initView() {
         View view = View.inflate(mContext, R.layout.news_center_frame, null);
         mNew_center_fl = (FrameLayout) view.findViewById(R.id.news_center_fl);
+
+        //设置初始化标题的方法
+        initTitleBar(view);
         return view;
     }
 
@@ -144,5 +147,8 @@ public class NewCenterPage extends BasePage {
         //因为帧布局addView后，view会一直叠加，所以在addView之前，应先清空之前添加的View
         mNew_center_fl.removeAllViews();
         mNew_center_fl.addView(mNewCenterPages.get(position).getRootView());
+
+        //当页面切换时，动态改变标题
+        mTxt_title.setText(newsCenterTitles.get(position));
     }
 }
