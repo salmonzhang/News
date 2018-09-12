@@ -132,7 +132,7 @@ public class NewCenterPage extends BasePage {
 
         //创建出新闻中心的4个页面对象，并封装在集合中
         mNewCenterPages = new ArrayList<>();
-        mNewCenterPages.add(new NewPage(mContext));
+        mNewCenterPages.add(new NewPage(mContext,newsCenterBean.getData().get(0)));//将新闻中心中的新闻数据传递给新闻界面
         mNewCenterPages.add(new TopicPage(mContext));
         mNewCenterPages.add(new PicPage(mContext));
         mNewCenterPages.add(new ActionPage(mContext));
@@ -146,9 +146,15 @@ public class NewCenterPage extends BasePage {
         //当左边菜单列表被点击时，让新闻中心帧布局展示对应的页面
         //因为帧布局addView后，view会一直叠加，所以在addView之前，应先清空之前添加的View
         mNew_center_fl.removeAllViews();
-        mNew_center_fl.addView(mNewCenterPages.get(position).getRootView());
+        BasePage basePage = mNewCenterPages.get(position);
+        mNew_center_fl.addView(basePage.getRootView());
 
         //当页面切换时，动态改变标题
         mTxt_title.setText(newsCenterTitles.get(position));
+
+        //页面展示了，同时也需要调用该界面的数据初始化方法
+        if (!basePage.isLoad) {
+            basePage.initData();
+        }
     }
 }
