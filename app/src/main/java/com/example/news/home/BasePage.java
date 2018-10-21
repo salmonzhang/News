@@ -22,7 +22,7 @@ public abstract class BasePage {
 
     public Context mContext;
     private View mRootView;
-    private final SlidingMenu mSlidingMenu;
+    public SlidingMenu mSlidingMenu;
     public TextView mTxt_title;
 
     public BasePage(Context context) {
@@ -55,5 +55,10 @@ public abstract class BasePage {
 
         ImageButton imgbtn_right = (ImageButton) view.findViewById(R.id.imgbtn_right);
         imgbtn_right.setVisibility(View.GONE);
+    }
+
+    //子类想实现就实现，不想实现就不实现
+    public void onResume() {
+
     }
 }

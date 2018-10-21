@@ -133,7 +133,9 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
                         mViewPager.setCurrentItem(1,false);//直接跳转到对应索引，并不设置滚动效果
                         mSlidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);//让侧滑菜单显示
 //                        mHomePages.get(1).initData();//通过这样写也能获取到对应页面的数据，但通过viewPager的页面切换监听去实现减少了代码的重复，并提高了代码质量
-                        mMenuFragment.setMenuType(0);//设置MenuFragment中的menu类型
+                        mMenuFragment.setMenuType(MenuFragment2.TYPE_NEWS_CENTER);//设置MenuFragment中的menu类型
+                        BasePage basePage = mHomePages.get(1);
+                        basePage.onResume();
                         break;
                     case R.id.rb_smart_service:
                         mViewPager.setCurrentItem(2,false);//直接跳转到对应索引，并不设置滚动效果

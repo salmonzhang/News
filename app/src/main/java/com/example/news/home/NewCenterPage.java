@@ -36,7 +36,8 @@ import okhttp3.Response;
 
 public class NewCenterPage extends BasePage {
 
-    public List<String> newsCenterTitles = new ArrayList<>();
+    public List<String> newsCenterTitles = new ArrayList<>();//新闻中心网络数据中的标题集合
+    private int index = 0;//记录当前新闻中心界面显示的界面索引
     private Handler mHandler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
@@ -142,6 +143,7 @@ public class NewCenterPage extends BasePage {
     }
 
     public void switchView(int position) {
+        index = position;
         System.out.println("切换新闻中心中的view = " + position);
         //当左边菜单列表被点击时，让新闻中心帧布局展示对应的页面
         //因为帧布局addView后，view会一直叠加，所以在addView之前，应先清空之前添加的View
@@ -155,6 +157,19 @@ public class NewCenterPage extends BasePage {
         //页面展示了，同时也需要调用该界面的数据初始化方法
         if (!basePage.isLoad) {
             basePage.initData();
+        }
+
+        //新闻中心四个页面切换时，动态调用对应界面的仿生命周期方法onResume
+        basePage.onResume();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        //判断新闻中心当前显示的是哪个界面，然后动态地调用显示界面的仿生命周期方法
+        if (mNewCenterPages != null && mNewCenterPages.size() > 0) {
+            BasePage basePage = mNewCenterPages.get(index);//新闻、组图、专题、互动中的一个页面对象
+            basePage.onResume();
         }
     }
 }
