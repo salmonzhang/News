@@ -53,7 +53,7 @@ public class NewPage extends BasePage {
         mNewItemPages = new ArrayList<>();
         for (NewsCenterBean.DataBean.ChildrenBean childrenBean : mDataBean.getChildren()) {
             mNewItemTitels.add(childrenBean.getTitle());
-            mNewItemPages.add(new NewItemPage(mContext));
+            mNewItemPages.add(new NewItemPage(mContext,childrenBean.getUrl()));
         }
 
         //创建适配器，展示界面
