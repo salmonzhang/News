@@ -5,11 +5,14 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.example.news.R;
 import com.example.news.adapter.NewItemAdapter;
 import com.example.news.bean.NewItemBean;
+import com.example.news.utils.DensityUtil;
 import com.example.news.utils.GsonTools;
 import com.example.news.utils.HMAPI;
 
@@ -40,6 +43,8 @@ public class NewItemPage extends BasePage {
             switch (msg.what) {
                 case 0:
 //                    RollViewPager rollViewPager = new RollViewPager(mContext);
+                    //根据top views的个数去动态创建小圆点
+                    initDots(mNewItemBean.getData().getTopnews().size());
                     int headerViewsCount = mLv.getHeaderViewsCount();//获取头视图的个数
                     if (headerViewsCount == 0) {//防止头视图重复加载
                         mLv.addHeaderView(mTopView);
@@ -55,8 +60,32 @@ public class NewItemPage extends BasePage {
             }
         }
     };
+
+    private ArrayList<ImageView> dots = new ArrayList<>();//用来管理轮播图的小圆点
+    //初始化动态小圆点
+    private void initDots(int size) {
+        mDots_ll.removeAllViews();//先清空，再添加，避免重复
+        dots.clear();
+        for (int i = 0; i < size; i++) {
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(DensityUtil.dip2px(mContext, 5),
+                    DensityUtil.dip2px(mContext, 5));
+            ImageView point = new ImageView(mContext);
+            if (i != 0) {
+                point.setImageResource(R.mipmap.dot_normal);
+                layoutParams.leftMargin = DensityUtil.dip2px(mContext, 5);
+            } else {
+                point.setImageResource(R.mipmap.dot_focus);
+            }
+            point.setLayoutParams(layoutParams);
+            mDots_ll.addView(point);
+            dots.add(point);
+        }
+    }
+
     private NewItemAdapter mNewItemAdapter;
     private View mTopView;
+    private LinearLayout mDots_ll;//动态小圆点的容器
+    private NewItemBean mNewItemBean;
 
     public NewItemPage(Context context, String url) {
         super(context);
@@ -70,6 +99,8 @@ public class NewItemPage extends BasePage {
 
         //初始化头视图的view
         mTopView = View.inflate(mContext, R.layout.layout_roll_view, null);
+        //初始化小圆点的容器
+        mDots_ll = (LinearLayout) mTopView.findViewById(R.id.dots_ll);
         return mLv;
     }
 
@@ -99,10 +130,10 @@ public class NewItemPage extends BasePage {
 
     List<NewItemBean.DataBean.NewsBean> newItems = new ArrayList<>();
     private void parseJson(String json) {
-        NewItemBean newItemBean = GsonTools.changeGsonToBean(json, NewItemBean.class);
-        System.out.println(newItemBean);
+        mNewItemBean = GsonTools.changeGsonToBean(json, NewItemBean.class);
+        System.out.println(mNewItemBean);
 
-        newItems.addAll(newItemBean.getData().getNews());
+        newItems.addAll(mNewItemBean.getData().getNews());
         mHandler.sendEmptyMessage(0);
     }
 }
