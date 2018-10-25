@@ -46,6 +46,13 @@ public class NewItemPage extends BasePage {
                 case 0:
                     RollViewPager rollViewPager = new RollViewPager(mContext);
                     rollViewPager.setTitles(mTop_news_title,newItemTitles);
+                    rollViewPager.setImages(newItemImages);
+                    rollViewPager.setDots(dots);
+                    rollViewPager.start();
+                    //将rollViewPager放在对应的容器中
+                    mTop_news_viewpager.removeAllViews();
+                    mTop_news_viewpager.addView(rollViewPager);
+
                     //根据top views的个数去动态创建小圆点
                     initDots(mNewItemBean.getData().getTopnews().size());
                     int headerViewsCount = mLv.getHeaderViewsCount();//获取头视图的个数
@@ -66,6 +73,7 @@ public class NewItemPage extends BasePage {
 
     private ArrayList<ImageView> dots = new ArrayList<>();//用来管理轮播图的小圆点
     private TextView mTop_news_title;
+    private LinearLayout mTop_news_viewpager;
 
     //初始化动态小圆点
     private void initDots(int size) {
@@ -108,6 +116,8 @@ public class NewItemPage extends BasePage {
         mDots_ll = (LinearLayout) mTopView.findViewById(R.id.dots_ll);
         //初始化热门新闻标题
         mTop_news_title = (TextView) mTopView.findViewById(R.id.top_news_title);
+        //初始化热门新闻图片的容器
+        mTop_news_viewpager = (LinearLayout) mTopView.findViewById(R.id.top_news_viewpager);
         return mLv;
     }
 
@@ -137,14 +147,19 @@ public class NewItemPage extends BasePage {
 
     private List<NewItemBean.DataBean.NewsBean> newItems = new ArrayList<>();//新闻列表数据集合
     private List<String> newItemTitles = new ArrayList<>();//热门新闻标题数据集合
+    private List<String> newItemImages = new ArrayList<>();//热门新闻图片集合数据
     private void parseJson(String json) {
         mNewItemBean = GsonTools.changeGsonToBean(json, NewItemBean.class);
         System.out.println(mNewItemBean);
 
         newItems.addAll(mNewItemBean.getData().getNews());
+
+        //封装标题数据、图片数据
         newItemTitles.clear();
+        newItemImages.clear();
         for (NewItemBean.DataBean.TopnewsBean topnewsBean : mNewItemBean.getData().getTopnews()) {
             newItemTitles.add(topnewsBean.getTitle());
+            newItemImages.add(topnewsBean.getTopimage());
         }
         mHandler.sendEmptyMessage(0);
     }
