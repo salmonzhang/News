@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.example.news.R;
 import com.example.news.adapter.NewItemAdapter;
@@ -15,6 +16,7 @@ import com.example.news.bean.NewItemBean;
 import com.example.news.utils.DensityUtil;
 import com.example.news.utils.GsonTools;
 import com.example.news.utils.HMAPI;
+import com.example.news.view.RollViewPager;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -42,7 +44,8 @@ public class NewItemPage extends BasePage {
             super.handleMessage(msg);
             switch (msg.what) {
                 case 0:
-//                    RollViewPager rollViewPager = new RollViewPager(mContext);
+                    RollViewPager rollViewPager = new RollViewPager(mContext);
+                    rollViewPager.setTitles(mTop_news_title,newItemTitles);
                     //根据top views的个数去动态创建小圆点
                     initDots(mNewItemBean.getData().getTopnews().size());
                     int headerViewsCount = mLv.getHeaderViewsCount();//获取头视图的个数
@@ -62,6 +65,8 @@ public class NewItemPage extends BasePage {
     };
 
     private ArrayList<ImageView> dots = new ArrayList<>();//用来管理轮播图的小圆点
+    private TextView mTop_news_title;
+
     //初始化动态小圆点
     private void initDots(int size) {
         mDots_ll.removeAllViews();//先清空，再添加，避免重复
@@ -101,6 +106,8 @@ public class NewItemPage extends BasePage {
         mTopView = View.inflate(mContext, R.layout.layout_roll_view, null);
         //初始化小圆点的容器
         mDots_ll = (LinearLayout) mTopView.findViewById(R.id.dots_ll);
+        //初始化热门新闻标题
+        mTop_news_title = (TextView) mTopView.findViewById(R.id.top_news_title);
         return mLv;
     }
 
@@ -128,12 +135,17 @@ public class NewItemPage extends BasePage {
         });
     }
 
-    List<NewItemBean.DataBean.NewsBean> newItems = new ArrayList<>();
+    private List<NewItemBean.DataBean.NewsBean> newItems = new ArrayList<>();//新闻列表数据集合
+    private List<String> newItemTitles = new ArrayList<>();//热门新闻标题数据集合
     private void parseJson(String json) {
         mNewItemBean = GsonTools.changeGsonToBean(json, NewItemBean.class);
         System.out.println(mNewItemBean);
 
         newItems.addAll(mNewItemBean.getData().getNews());
+        newItemTitles.clear();
+        for (NewItemBean.DataBean.TopnewsBean topnewsBean : mNewItemBean.getData().getTopnews()) {
+            newItemTitles.add(topnewsBean.getTitle());
+        }
         mHandler.sendEmptyMessage(0);
     }
 }
